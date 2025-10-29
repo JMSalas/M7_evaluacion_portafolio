@@ -120,7 +120,7 @@ El manejo de errores se realiza mediante un *middleware* central (`error_middlew
 
 ### Flujo de Captura de Errores
 
-#### Manejo Asíncrono Automático (Express v5):
+### Manejo Asíncrono Automático (Express v5):
 
 Todos los controllers (listarUsuarios, crearPedido, etc.) son funciones async.
 
@@ -128,7 +128,7 @@ Gracias a la versión Express v5 (o superior), cuando una función de controller
 
 El error capturado es redirigido inmediatamente al siguiente middleware con cuatro argumentos, que es errorMiddleware.
 
-#### Manejo de Errores Síncronos y Validación de Sequelize (400):
+### Manejo de Errores Síncronos y Validación de Sequelize (400):
 
 Las operaciones de creación y actualización que interactúan con Sequelize (crearUsuario, actualizarUsuario, crearPedido) sí utilizan un bloque try...catch.
 
@@ -136,7 +136,7 @@ Este bloque tiene el objetivo de capturar errores de validación específicos de
 
 Esto asegura que los errores de datos (ej. email duplicado, password débil) siempre devuelvan un 400 legible.
 
-#### Respuesta Final (errorMiddleware):
+### Respuesta Final (errorMiddleware):
 
 El errorMiddleware es el último punto de la cadena de Express. Recibe el objeto err (lanzado de forma asíncrona o convertido).
 
