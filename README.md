@@ -50,7 +50,7 @@ La API estará disponible en `http://localhost:8080`.
 
 -----
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 .
