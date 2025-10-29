@@ -120,29 +120,29 @@ El manejo de errores se realiza mediante un *middleware* central (`error_middlew
 
 ### Flujo de Captura de Errores
 
-    Manejo Asíncrono Automático (Express v5):
+Manejo Asíncrono Automático (Express v5):
 
-        Todos los controllers (listarUsuarios, crearPedido, etc.) son funciones async.
+    Todos los controllers (listarUsuarios, crearPedido, etc.) son funciones async.
 
-        Gracias a la versión Express v5 (o superior), cuando una función de controller asíncrona lanza un error (throw error;), Express lo captura automáticamente sin necesidad de envolverlo en bloques try...catch en cada ruta o usar una utilidad express-async-errors.
+    Gracias a la versión Express v5 (o superior), cuando una función de controller asíncrona lanza un error (throw error;), Express lo captura automáticamente sin necesidad de envolverlo en bloques try...catch en cada ruta o usar una utilidad express-async-errors.
 
-        El error capturado es redirigido inmediatamente al siguiente middleware con cuatro argumentos, que es errorMiddleware.
+    El error capturado es redirigido inmediatamente al siguiente middleware con cuatro argumentos, que es errorMiddleware.
 
-    Manejo de Errores Síncronos y Validación de Sequelize (400):
+Manejo de Errores Síncronos y Validación de Sequelize (400):
 
-        Las operaciones de creación y actualización que interactúan con Sequelize (crearUsuario, actualizarUsuario, crearPedido) sí utilizan un bloque try...catch.
+    Las operaciones de creación y actualización que interactúan con Sequelize (crearUsuario, actualizarUsuario, crearPedido) sí utilizan un bloque try...catch.
 
-        Este bloque tiene el objetivo de capturar errores de validación específicos de Sequelize (SequelizeValidationError), convertirlos a una clase personalizada ErrorValidacion (status 400 Bad Request) y lanzar el error ya convertido (throw new ErrorValidacion(...)) para que sea capturado por el paso 1.
+    Este bloque tiene el objetivo de capturar errores de validación específicos de Sequelize (SequelizeValidationError), convertirlos a una clase personalizada ErrorValidacion (status 400 Bad Request) y lanzar el error ya convertido (throw new ErrorValidacion(...)) para que sea capturado por el paso 1.
 
-        Esto asegura que los errores de datos (ej. email duplicado, password débil) siempre devuelvan un 400 legible.
+    Esto asegura que los errores de datos (ej. email duplicado, password débil) siempre devuelvan un 400 legible.
 
-    Respuesta Final (errorMiddleware):
+Respuesta Final (errorMiddleware):
 
-        El errorMiddleware es el último punto de la cadena de Express. Recibe el objeto err (lanzado de forma asíncrona o convertido).
+    El errorMiddleware es el último punto de la cadena de Express. Recibe el objeto err (lanzado de forma asíncrona o convertido).
 
-        Este middleware asigna un 500 Internal Server Error si el error no tiene un código de estado definido.
+    Este middleware asigna un 500 Internal Server Error si el error no tiene un código de estado definido.
 
-        Finalmente, uniformiza la respuesta al cliente a un objeto JSON { name, error } con el código de estado HTTP adecuado.
+    Finalmente, uniformiza la respuesta al cliente a un objeto JSON { name, error } con el código de estado HTTP adecuado.
 
 | HTTP Status | Clase de Error | Nombre (`name`) | Caso de Uso Principal |
 | :--- | :--- | :--- | :--- |
